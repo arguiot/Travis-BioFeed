@@ -4,12 +4,10 @@ language:        python
 python:
     - "3.6"
 
-before_install:
+install:
   - git clone https://${GIT_VAR}@git.bio-feed.org/arguiot/SpecieClassification
   - git clone https://${GIT_VAR}@git.bio-feed.org/BioFeed/plants-data
-
-install:
-  - pip install -r requirements.txt
+  - cd SpecieClassification && pip install -r requirements.txt && cd ../
 
 script:
   - cd SpecieClassification/data_processing
