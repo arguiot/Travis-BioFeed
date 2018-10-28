@@ -1,0 +1,26 @@
+dist:            trusty
+sudo:            required
+language:        python
+python:
+    - "3.6"
+
+before_install:
+  - git clone https://${GIT_VAR}@git.bio-feed.org/arguiot/SpecieClassification
+  - git clone https://${GIT_VAR}@git.bio-feed.org/BioFeed/plants-data
+
+install:
+  - pip install -r requirements.txt
+
+script:
+  - cd SpecieClassification/data_processing
+  - python organize.py ../../plants-data ../
+  - cd ../train
+  - python retrain.py --image_dir ../dataset/ --bottleneck_dir ../bottleneck/ --how_many_training_steps 500 --output_graph ../trained_model/retrained_graph.pb --output_labels ../trained_model/retrained_labels.txt --summaries_dir ../summaries
+deploy:
+  provider:      releases
+  api_key:       $GIT_TOKEN
+  file:          ../trained_model/*
+  skip_cleanup:  true
+notifications:
+  email:         false
+    
