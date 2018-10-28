@@ -17,7 +17,9 @@ script:
 deploy:
   provider:      releases
   api_key:       $GIT_TOKEN
-  file:          ../trained_model/*
+  file:          
+    - ../trained_model/retrained_graph.pb
+    - ../trained_model/retrained_labels.txt
   skip_cleanup:  true
 notifications:
   email:         false
